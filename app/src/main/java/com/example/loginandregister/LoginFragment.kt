@@ -5,6 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import androidx.activity.addCallback
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +41,33 @@ class LoginFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //Do Login
+        view.findViewById<Button>(R.id.doLogin).setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("email", view.findViewById<EditText>(R.id.LoginEmail).text.toString())
+            }
+            findNavController().setGraph(R.navigation.profile_graph, bundle)
+        }
+
+        //Go To Register
+        view.findViewById<Button>(R.id.goToR1).setOnClickListener {
+            val email = view.findViewById<EditText>(R.id.LoginEmail).text.toString()
+            val password = view.findViewById<EditText>(R.id.LoginPassword).text.toString()
+            val action = LoginFragmentDirections.actionLoginFragmentToReg1Fragment(email, password)
+            view.findNavController().navigate(action)
+        }
+
+        //# Back Button
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+            requireActivity().finish()
+        }
+
+    }
+
 
     companion object {
         /**

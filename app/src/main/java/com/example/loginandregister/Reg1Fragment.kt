@@ -5,6 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import androidx.activity.addCallback
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +41,25 @@ class Reg1Fragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_reg1, container, false)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //# Set Text From Login
+        view.findViewById<EditText>(R.id.Reg1Email).setText(arguments?.getString("email"))
+        view.findViewById<EditText>(R.id.Reg1Password).setText(arguments?.getString("password"))
+        view.findViewById<Button>(R.id.Reg1Next).setOnClickListener {
+            val email = view.findViewById<EditText>(R.id.Reg1Email).text.toString()
+            val action = Reg1FragmentDirections.actionReg1FragmentToReg2Fragment(email)
+            view.findNavController().navigate(action)
+        }
+
+        //# Back Button
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigate(R.id.action_reg1Fragment_to_loginFragment)
+        }
+    }
+
 
     companion object {
         /**
